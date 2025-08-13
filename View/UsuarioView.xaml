@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppBindingCommands.View.UsuarioView"
+             Title="UsuarioView">
+    <VerticalStackLayout>
+        <Label>Digite abaixo o seu nome:</Label>
+        <Entry Text="{Binding Name}" Placeholder="Digite seu nome" />
+        <Label Text="{Binding DisplayName}"/>
+
+        <Label Text="{Binding DisplayMessage}"
+               HorizontalOptions="CenterAndExpand"
+               VerticalOptions="CenterAndExpand"/>
+
+        <Button Command="{Binding ShowMessageCommand}"
+                Text="Message"/>
+    </VerticalStackLayout>
+</ContentPage>
