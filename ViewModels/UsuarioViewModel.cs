@@ -14,6 +14,7 @@ namespace AppBindingCommands.ViewModels
         public UsuarioViewModel()
         {
             ShowMessageCommand = new Command(ShowMessage);
+            CountCommand = new Command(async () => await CountCharacters());
         }
        
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -64,6 +65,23 @@ namespace AppBindingCommands.ViewModels
         {
             DateTime data = DateTime.Now;
             DisplayMessage = $"Boa Noite, {Name}. Hoje é {data}";
+        }
+
+        public async Task CountCharacters()
+        {
+            string nameLenght =
+                string.Format("Seu nome tem {0} letras", name.Length);
+
+            await Application.Current
+                .MainPage.DisplayAlert("Informção", nameLenght, "OK");
+        }
+
+        public ICommand CountCommand { get; }
+
+       public async Task ShowOptions()
+        {
+            string result = await Application.Current.MainPage
+                .DisplayActionSheet("Selecione uma opção: ", "", "Cancelar", "Limpar", "Contar Caracteres", "Exibir Saudação");
         }
     }
 }
