@@ -16,6 +16,10 @@
                 Text="Message"/>
      
         <Button Command="{Binding CountCommand}" 
-                Text="Contar Caracteres"/>
+                Text="Contar caracteres"/>
+        <Button Command="{Binding CleanCommand}"
+                Text="Limpar campos"/>
+        <Button Command="{Binding OptionCommand}"
+                Text="Exibir opções"/>
     </VerticalStackLayout>
 </ContentPage>

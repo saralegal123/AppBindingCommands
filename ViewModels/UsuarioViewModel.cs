@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace AppBindingCommands.ViewModels
         {
             ShowMessageCommand = new Command(ShowMessage);
             CountCommand = new Command(async () => await CountCharacters());
+            CleanCommand = new Command(async () => await CleanConfirmation());
+            OptionCommand = new Command(async() => await ShowOptions());   
         }
        
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -50,7 +53,7 @@ namespace AppBindingCommands.ViewModels
             get => displayMessage; 
             set 
             {
-                if (displayMessage == value)
+                if (displayMessage == null)
                     return;
 
                 displayMessage = value;
@@ -73,7 +76,7 @@ namespace AppBindingCommands.ViewModels
                 string.Format("Seu nome tem {0} letras", name.Length);
 
             await Application.Current
-                .MainPage.DisplayAlert("Informção", nameLenght, "OK");
+                .MainPage.DisplayAlert("Informação", nameLenght, "OK");
         }
 
         public ICommand CountCommand { get; }
@@ -82,6 +85,33 @@ namespace AppBindingCommands.ViewModels
         {
             string result = await Application.Current.MainPage
                 .DisplayActionSheet("Selecione uma opção: ", "", "Cancelar", "Limpar", "Contar Caracteres", "Exibir Saudação");
+            
+            if (result != null)
+            {
+                if(result.Equals("Limpar"))
+                    await CleanConfirmation();
+                if (result.Equals("Contar Caracteres"))
+                    await CountCharacters();
+                if (result.Equals("Exibir Saudação"))
+                    ShowMessage();
+            }
         }
+        public ICommand OptionCommand { get; }
+
+        public async Task CleanConfirmation()
+        {
+            if (await Application.Current.MainPage
+                .DisplayAlert("Confirmação", "Confirmar limpeza dos dados?", "Yes", "No"))
+            {
+                Name = string.Empty;
+                DisplayMessage = string.Empty;
+                OnPropertyChanged(Name);
+                OnPropertyChanged(DisplayMessage);
+
+                await Application.Current.MainPage
+                    .DisplayAlert("Informação", "Limpeza realizada com sucesso", "Ok");
+            }
+        }
+        public ICommand CleanCommand { get; }
     }
 }
